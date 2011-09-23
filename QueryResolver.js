@@ -1,35 +1,62 @@
-//provides a way to handle querys
+//Copyright Nick Tkachov 2011.
+
+//this file provides an access point for any sort of search querys and 
+//acts as a front end for the PostCollector that records and sorts all the posts.
 var PC = require('./TagEngine/PostCollector.js');
 
+var error = "Sorry, This feature is still in production.";
+
+//Set the functions to return errors in case we call a function
+//that hasnt been yet implemented.
 exports.getPostByTagFunction = function (query) {
-    return "function undefined";
+    return error;
 };
 exports.getPostFunction = function (query) {
-    return "function undefined";
+    return error;
 }
 exports.getTagsFunction = function (query) {
-    return "function undefined";
+    return error;
 };
 exports.defaultFunction = function (query) {
-    return "function undefined";
+    return "Sorry that is not a valid request";
 };
 exports.getPostsFunction = function (query) {
-	return "function undefined";
+	return error;
+};
+exports.getSearchFunction = function(query){
+	return error;
 };
 
+//set up a hash for quickly resolving querys
 var queryList = new Array(4);
+//where will return a list of posts that are taged with a specific tag
+//post will return a single post given a path (usually '/posts/*.html');
+//tags will return the tags for a given post path ('/posts/*html');
+//num will return the posts numbered from n1:n2
+//search is not yet implemented.
 queryList["where"] = exports.getPostByTagFunction;
 queryList["post"] = exports.getPostFunction;
 queryList["tags"] = exports.getTagsFunction;
 queryList["num"] = exports.getPostsFunction;
+queryList["search"] = exports.getSearchFunction;
 
+
+//Quick reload for when we reassign the functions. the reassign can be done externally
+//but we want to keep the query list as local as possible.
 exports.reloadQuery = function () {
     queryList["where"] = exports.getPostByTagFunction;
     queryList["post"] = exports.getPostFunction;
     queryList["tags"] = exports.getTagsFunction;
 	queryList["num"] = exports.getPostsFunction;
+	queryList["search"] = exports.getPostsFunction;
 }
 
+/*
+Purpose:
+	Parses the quiery. Determines and runs the matching function from the queryList hash.
+Params:
+	path - the single query that will be parsed (eg. "where=something")
+*/
 var handleQuery = function (path) {
         var query = path.split("=");
         console.log(query);
@@ -38,20 +65,33 @@ var handleQuery = function (path) {
         else return exports.defaultFunction(query[0]);
 
     }
-
+//Allow external access
 exports.handleQuery = handleQuery;
 
+/*
+Purpose:
+	Provides and entry point for the query resolver. Splits propper queries and uses handleQuery to
+	access the result.
+Params:
+	path - a '?' delimited list of querys for which results need to be returned.
+*/
 exports.resolveQuery = function (path) {
     var splitQuery = path.split("?");
     console.log(splitQuery);
+	var resolved = ""
     for (q in splitQuery) {
         if (splitQuery[q] != '') {
             console.log(splitQuery[q]);
-            return handleQuery(splitQuery[q]);
+            resolved += handleQuery(splitQuery[q]);
         }
     }
+	return resolved;
 }
 
+
+//A quick load function to start up the blog server. 
+//this can be changed at any time to change the functionality of the server 
+//depending on the needs of users.
 exports.blogServ = function () {
 
     exports.getPostByTagFunction = function (query) {
@@ -107,7 +147,7 @@ exports.blogServ = function () {
 		if(resp == "") return "No posts were found";
 		return resp.toString();
 	};
-
+	//reload the query handler.
     exports.reloadQuery();
 
 }

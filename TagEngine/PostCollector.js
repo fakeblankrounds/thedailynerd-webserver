@@ -6,6 +6,7 @@ var postAccessCount = new Array(2);
 var chronoPosts = new Array(2);
 var postsChrono = new Array(2);
 var postNumber = 0;
+
 exports.addPost = function (post, postbody, tagCollection) {
     posts[post] = tagCollection;
     postBody[post] = postbody;
@@ -23,7 +24,6 @@ exports.addPost = function (post, postbody, tagCollection) {
             tags[tagCollection[tag]].push(post);
         }
     }
-	//console.log("added :" + post + postbody);
 };
 
 var postDivOdd = '<div class="oddPost">';
@@ -63,4 +63,9 @@ exports.getTags = function (path) {
 
 exports.debug = function () {
     return posts.toString() + tags.toString() + postBody.toString();
+};
+
+exports.getPostCounts = function()
+{
+	return postAccessCount;
 };

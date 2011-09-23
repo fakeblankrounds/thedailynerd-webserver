@@ -2,7 +2,11 @@
 var amazon = require('./amazon.js');
 var contentTypes = new Array(10);
 var files = new Array(10);
+//tells the browser when the files were last modified. We assume that the last serverboot
+//is the last time the files are modified because as of now the only way to 
+//reload files is to reboot the server.
 var serverBoot = (new Date()).toString().split('+')[0];
+//expiration property of the file for browser cacheing.
 var expire = (new Date(new Date().getTime() + 8000000000)).toString().split('+')[0];
 console.log(serverBoot);
 exports.servFile = function(path, res)
@@ -36,37 +40,3 @@ var getandServFile = function(path,contentType, data, res)
 	else
 		res.end(data);
 }
-/*
-var sys = require("sys"),
-    http = require("http"),
-    url = require("url"),
-    path = require("path"),
-    fs = require("fs");
-
-http.createServer(function(request, response) {
-    var uri = url.parse(request.url).pathname;
-    var filename = path.join(process.cwd(), uri);
-    path.exists(filename, function(exists) {
-    	if(!exists) {
-    		response.sendHeader(404, {"Content-Type": "text/plain"});
-    		response.write("404 Not Found\n");
-    		response.close();
-    		return;
-    	}
-
-    	fs.readFile(filename, "binary", function(err, file) {
-    		if(err) {
-    			response.sendHeader(500, {"Content-Type": "text/plain"});
-    			response.write(err + "\n");
-    			response.close();
-    			return;
-    		}
-
-    		response.sendHeader(200);
-    		response.write(file, "binary");
-    		response.close();
-    	});
-    });
-}).listen(8080);
-
-sys.puts("Server running at http://localhost:8080/");*/

@@ -1,5 +1,6 @@
 //bloggen
 var http = require('http');
+var PC = require('./TagEngine/PostCollector.js');
 exports.templatehead = "";
 exports.cal = "";
 exports.templateend = "";
@@ -42,4 +43,14 @@ var splitTemplate = function()
 
 exports.wrapPost = function(post){
 	return templatehead + post + templateend;
+};
+
+exports.switchTags = function()
+{
+	/*var posts = PC.getPostCounts();
+	var h3 = 0,h2 = 0,h1 = 0;
+	var 
+	for(var i in posts)
+	{*/
+		
 };
