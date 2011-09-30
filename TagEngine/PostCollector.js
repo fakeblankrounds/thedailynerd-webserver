@@ -69,3 +69,14 @@ exports.getPostCounts = function()
 {
 	return postAccessCount;
 };
+
+exports.clearPosts = function()
+{
+ posts = [];
+ tags = [];
+ postBody = [];
+ postAccessCount = [];
+ chronoPosts = [];
+ postsChrono = [];
+ postNumber = 0;
+}

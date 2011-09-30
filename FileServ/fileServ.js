@@ -1,5 +1,5 @@
 //fileserv
-var amazon = require('./amazon.js');
+var amazon = require('../BackEnd/amazon.js');
 var contentTypes = new Array(10);
 var files = new Array(10);
 //tells the browser when the files were last modified. We assume that the last serverboot
@@ -39,4 +39,8 @@ var getandServFile = function(path,contentType, data, res)
 	}
 	else
 		res.end(data);
+}
+
+exports.clearCache = function(){
+	files = new Array(10);
 }

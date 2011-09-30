@@ -1,6 +1,6 @@
 //bloggen
 var http = require('http');
-var PC = require('./TagEngine/PostCollector.js');
+var PC = require('../TagEngine/PostCollector.js');
 exports.templatehead = "";
 exports.cal = "";
 exports.templateend = "";
@@ -14,6 +14,7 @@ var options = {
   path: '/dailynerd/template.html'
 };
 var req = http.request(options, function(res) {
+	template="";
   console.log('STATUS: ' + res.statusCode);
  // console.log('HEADERS: ' + JSON.stringify(res.headers));
   res.setEncoding('utf8');

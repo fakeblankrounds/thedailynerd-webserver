@@ -2,7 +2,7 @@
 
 //this file provides an access point for any sort of search querys and 
 //acts as a front end for the PostCollector that records and sorts all the posts.
-var PC = require('./TagEngine/PostCollector.js');
+var PC = require('../TagEngine/PostCollector.js');
 
 var error = "Sorry, This feature is still in production.";
 
@@ -12,6 +12,7 @@ exports.getPostByTagFunction = function (query) {
     return error;
 };
 exports.getPostFunction = function (query) {
+	console.log("was here1")
     return error;
 }
 exports.getTagsFunction = function (query) {
@@ -106,6 +107,7 @@ exports.blogServ = function () {
     exports.getPostFunction = function (query) {
         var resp = PC.getPost(query);
         if (resp === undefined) return "No such posts exist";
+		console.log("was here");
         return resp.toString();
     };
     exports.getTagsFunction = function (query) {
@@ -124,7 +126,7 @@ exports.blogServ = function () {
 		console.log(JSON.stringify(range));
 		var resp = "";
 		if(range[0] < range[1]){
-		for(var i = range[1]; i >= range[0]; i--)
+		for(var i = range[0]; i <= range[1]; i++)
 		{
 			
 			var p = PC.getPost(PC.getPostByNumber(i));

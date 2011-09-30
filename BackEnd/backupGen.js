@@ -1,9 +1,12 @@
 //File loader 
 var http = require('http');
-var sax = require('./lib/sax.js');
+var sax = require('../lib/sax.js');
 var amazon = require('./amazon.js');
-var PC = require('./TagEngine/PostCollector.js');
+var PC = require('../TagEngine/PostCollector.js');
 
+var loadArray = Array(3);
+var loadNum = Array(3);
+var pathLoad = Array(3);
 
 exports.restore = function () {
 
@@ -38,11 +41,18 @@ var ptr = 0;
 parser.onerror = function (e) {
     //console.log("Error:" + e);
 };
+var xml_counter = 0;
 parser.ontext = function (t) {
 	t= t.replace(/\r\n/g,'')
 	if(ptr >= 0 && !(t == '')){
 		//  console.log("Text:" + t + "   " + t.length + "ptr: " + ptr);
 		post[ptr] = t;
+		if(ptr == 0)
+		{
+			pathLoad[t] = false;
+			loadNum[t] = xml_counter;
+			xml_counter++;
+		}
 	}
 };
 parser.onopentag = function (node) {
@@ -54,20 +64,43 @@ parser.onopentag = function (node) {
 		ptr = 1;
 	else
 		ptr = -1;
-		
 	//console.log("openTag:" + node.name + ptr);
 };
 parser.onclosetag = function (node){
 	if(node == "post"){
 		//console.log("Post = " + JSON.stringify(post));
 		amazon.loadFile(post[0], function(path, contentType, thisData, responce){
-			PC.addPost(path, thisData, responce);
-			//console.log("amazon" + path + " " + thisData);
+			
+			loadArray[loadNum[path]] = new Array(3);
+			loadArray[loadNum[path]][0] = path;
+			loadArray[loadNum[path]][1] = thisData;
+			loadArray[loadNum[path]][2] = responce;
+			pathLoad[path] = true;
+		
+			var allposts = true;
+			for(var i in pathLoad)
+			{
+				if(pathLoad[i] == false)
+					allposts = false;
+			}
+			if(allposts == true)
+			{
+				//console.log(loadArray);
+				addtoPosts();
+			}
 		},post[1].split(',')) ;
 	}
 };
-parser.onend = function () {
-    console.log("done");
+var addtoPosts = function () {
+    
+	for(var v in loadArray)
+	{
+		PC.addPost(loadArray[v][0], loadArray[v][1],loadArray[v][2]);
+		//console.log("post added" + v[0]);
+	}
+	loadArray = [];
+	pathLoad = [];
+	count = 0;
 };
 var process = function (data) {
         parser.write(data);
