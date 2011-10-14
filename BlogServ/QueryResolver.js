@@ -12,7 +12,6 @@ exports.getPostByTagFunction = function (query) {
     return error;
 };
 exports.getPostFunction = function (query) {
-	console.log("was here1")
     return error;
 }
 exports.getTagsFunction = function (query) {
@@ -107,7 +106,6 @@ exports.blogServ = function () {
     exports.getPostFunction = function (query) {
         var resp = PC.getPost(query);
         if (resp === undefined) return "No such posts exist";
-		console.log("was here");
         return resp.toString();
     };
     exports.getTagsFunction = function (query) {

@@ -18,12 +18,11 @@ exports.routeURL = function(req, res){
 		//console.log(req);
 		console.log("path: " + path + " search: " + search);
 		
-		if(search != undefined && (path == undefined || path == "/"))
+		if(search != undefined)
 		{
-			console.log("was here 3");
 			querySolver(search, res);
 		}
-		else if(search == undefined && (path == undefined || path == "/"))
+		else if(search == undefined && path != undefined)
 		{
 			fileServer(path, res);
 		}
@@ -49,6 +48,10 @@ var fileServer = function(path, res){
 		specialFile("printKey", res);
 		return;
 	}
+	if(path == "/reload"+key){
+		reloadServer();
+		return
+	}
 	fserv.servFile(path, res);
 
 }
@@ -73,7 +76,6 @@ var querySolver = function(search, res){
 		res.write(gen.templatehead);	
 		res.write(cal.cal);
 		res.write(gen.cal);
-		console.log("was here 2");
 		var resp = QR.resolveQuery(search);
 		res.write(resp);
 		res.write(gen.templateend);
@@ -92,3 +94,14 @@ function getKey(length)
 	}
 	return key;
 }
+
+function reloadServer()
+{
+	PC.clearPosts();
+	gen.loadTemplate();
+	cal.loadCal();
+	fserv.clearCache();
+	restore.restore();
+	console.log("Server Reloaded");
+};
+
