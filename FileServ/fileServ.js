@@ -1,5 +1,6 @@
 //fileserv
 var amazon = require('../BackEnd/amazon.js');
+var bgen = require('../BlogServ/blogGen.js')
 var contentTypes = new Array(10);
 var files = new Array(10);
 //tells the browser when the files were last modified. We assume that the last serverboot
@@ -11,6 +12,8 @@ var expire = (new Date(new Date().getTime() + 8000000000)).toString().split('+')
 console.log(serverBoot);
 exports.servFile = function(path, res)
 {
+	path = path.replace(bgen.num, '');
+	
 	//check to see if files has the file
 	if(files[path] === undefined)
 		amazon.loadFile(path,getandServFile, res);

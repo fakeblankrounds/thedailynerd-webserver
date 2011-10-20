@@ -1,12 +1,22 @@
 //bloggen
 var http = require('http');
+
 var PC = require('../TagEngine/PostCollector.js');
 exports.templatehead = "";
 exports.cal = "";
 exports.templateend = "";
 var template = "";
+
+
 exports.loadTemplate = function(){
+	//exports.num = (Math.random() *100) * (Math.random()  * 1000 ) * (Math.random() * 10000) ; //we generate a random number for our current version.
 	
+	num1 = (Math.random() *100) * (Math.random()  * 1000 ) * (Math.random() * 10000) ;
+	num2 = (Math.random() *100) * (Math.random()  * 1000 ) * (Math.random() * 10000) ;
+	num3 = (Math.random() *100) * (Math.random()  * 1000 ) * (Math.random() * 10000) ;
+	num4 = (Math.random() *100) * (Math.random()  * 1000 ) * (Math.random() * 10000) ;
+	exports.num = Math.round(num1) + "" + Math.round(num2) + "" + Math.round(num3) + "" + Math.round(num4);
+console.log(exports.num);
 var options = {
 	method: 'GET',
   host: 's3.amazonaws.com',
@@ -40,6 +50,9 @@ var splitTemplate = function()
 	exports.templatehead=temp[0];
 	exports.cal = temp[1];
 	exports.templateend=temp[2];
+	
+	exports.templatehead = exports.templatehead.replace('css/bace.css', 'css/bace' + exports.num + '.css');
+	exports.templateend = exports.templateend.replace('js/debug.js', 'js/debug' + exports.num + '.js');
 };
 
 exports.wrapPost = function(post){

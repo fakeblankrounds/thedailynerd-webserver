@@ -14,7 +14,7 @@ restore.restore();
 gen.loadTemplate();
 cal.loadCal();
 
-var port = 8000;
+var port = 80;
 
 http.createServer(router.routeURL).listen(port);
 console.log('Server Running at 127.0.0.1:' + port);

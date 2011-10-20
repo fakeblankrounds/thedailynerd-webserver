@@ -80,7 +80,7 @@ var querySolver = function(search, res){
 		res.write(resp);
 		res.write(gen.templateend);
 		res.end();
-		console.log("Search = " + search + '\n' + resp);
+	//	console.log("Search = " + search + '\n' + resp);
 }
 //Our security key.
 var key = getKey(10);

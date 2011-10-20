@@ -127,8 +127,8 @@ exports.blogServ = function () {
 		for(var i = range[0]; i <= range[1]; i++)
 		{
 			
-			var p = PC.getPost(PC.getPostByNumber(i));
-			console.log(PC.getPostByNumber(i) + "____" + i);
+			var p = PC.getShort(PC.getPostByNumber(i));
+			//console.log(PC.getPostByNumber(i) + "____" + i);
 			if(p != undefined)
 				resp += p;
 		}
@@ -137,8 +137,8 @@ exports.blogServ = function () {
 		{
 		for(var i = range[0]; i >= range[1]; i--)
 		{
-			var p = PC.getPost(PC.getPostByNumber(i));
-			console.log(PC.getPostByNumber(i) + "____" + i);
+			var p = PC.getShort(PC.getPostByNumber(i));
+			//console.log(PC.getPostByNumber(i) + "____" + i);
 			if(p != undefined)
 				resp += p;
 		}

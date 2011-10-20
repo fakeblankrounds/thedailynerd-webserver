@@ -85,7 +85,6 @@ parser.onclosetag = function (node){
 			}
 			if(allposts == true)
 			{
-				//console.log(loadArray);
 				addtoPosts();
 			}
 		},post[1].split(',')) ;
